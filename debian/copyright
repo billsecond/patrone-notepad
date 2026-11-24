@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: patrone-notepad
-Source: https://github.com/billsecond/patroneos
+Source: https://github.com/billsecond/patrone-notepad
 Comment:
  Notepad links dynamically to GTK 4, GLib, Pango, Cairo, HarfBuzz,
  graphene and the libraries they use, from Ubuntu's own packages
@@ -25,7 +25,7 @@ Files: vendor/*
 Copyright: The authors of each crate
 License: MIT or Apache-2.0
 Comment:
- The 69 Rust crates in vendor/, which packaging/build.sh adds, are compiled
+ The 69 Rust crates in vendor/, which tools/build-deb.sh adds, are compiled
  into the program, with Rust's standard library. 66 are MIT, or MIT or
  Apache-2.0 at the user's choice; the others are the Unlicense or MIT
  (memchr), Apache-2.0 with the LLVM exception (target-lexicon), and MIT or

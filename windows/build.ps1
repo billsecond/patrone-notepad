@@ -18,8 +18,8 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 
-$root = (Resolve-Path "$PSScriptRoot\..\..").Path
-$notepad = Join-Path $root 'notepad'
+$root = (Resolve-Path "$PSScriptRoot\..").Path
+$notepad = $root
 $version = (Select-String -Path "$notepad\Cargo.toml" -Pattern '^version = "(.+)"').Matches[0].Groups[1].Value
 # MSYS2's UCRT64 environment: its MINGW64 one no longer has GTK 4
 $mingw = Join-Path $Msys2 'ucrt64'
@@ -138,11 +138,11 @@ for ($i = 0; $i -lt $sizes.Count; $i++) {
 foreach ($png in $pngs) { $writer.Write($png) }
 [IO.File]::WriteAllBytes("$stage\patrone-notepad.ico", $ico.ToArray())
 
-# PatroneOS's fonts: the release fonts-patroneos installs (fonts\release.txt),
+# PatroneOS's fonts: the release fonts-patroneos installs (windows\fonts-release.txt, a copy of PatroneOS's fonts/release.txt),
 # checked against its pinned checksum. Notepad loads them for itself; they
 # aren't installed in Windows.
 $release = @{}
-foreach ($line in Get-Content "$root\fonts\release.txt") {
+foreach ($line in Get-Content "$root\windows\fonts-release.txt") {
     if ($line -match '^(\w+)=(.+)$') { $release[$Matches[1]] = $Matches[2] }
 }
 $zip = Join-Path $out "PatroneOS-Fonts-$($release.version).zip"
@@ -150,7 +150,7 @@ if (-not (Test-Path $zip) -or (Get-FileHash $zip -Algorithm SHA256).Hash -ne $re
     Invoke-WebRequest -Uri $release.url -OutFile $zip -UseBasicParsing
 }
 if ((Get-FileHash $zip -Algorithm SHA256).Hash -ne $release.sha256.ToUpper()) {
-    throw "$($release.url) isn't the release fonts\release.txt pins (its SHA-256 differs)"
+    throw "$($release.url) isn't the release windows\fonts-release.txt pins (its SHA-256 differs)"
 }
 $fonts = Join-Path $out 'fonts'
 if (Test-Path $fonts) { Remove-Item -Recurse -Force $fonts }
@@ -173,7 +173,7 @@ try {
 } finally {
     Pop-Location
 }
-Invoke-Msys2 "bash '$(($root -replace '\\', '/'))/packaging/third-party-licenses.sh' '$(($out -replace '\\', '/'))/vendor' > '$(($stage -replace '\\', '/'))/licenses/rust-crates.txt'"
+Invoke-Msys2 "bash '$(($root -replace '\\', '/'))/tools/third-party-licenses.sh' '$(($out -replace '\\', '/'))/vendor' > '$(($stage -replace '\\', '/'))/licenses/rust-crates.txt'"
 Remove-Item -Recurse -Force "$out\vendor"
 $packages = @{}
 foreach ($dll in @($copied.Keys) + @("$mingw\bin\gdbus.exe")) {

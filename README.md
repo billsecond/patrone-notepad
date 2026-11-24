@@ -2,7 +2,25 @@
 
 PatroneOS's plain text editor, packaged as `patrone-notepad`: a Rust and
 GTK 4 app (`org.patrone.Notepad`), and the default app for plain text
-(`patrone-default-apps`), with GNOME's Text Editor as the fallback.
+(`patrone-default-apps`), with GNOME's Text Editor as the fallback. It
+installs on its own too, on Ubuntu 26.04 and systems built on it.
+
+## Installing
+
+- **PatroneOS** has it already.
+- **Ubuntu 26.04 and systems built on it:** from Patrone's apt
+  repository, which keeps it up to date
+  ([billsecond/patrone-apt](https://github.com/billsecond/patrone-apt),
+  "Patrone's apps on Ubuntu"), then `sudo apt install patrone-notepad`.
+  Or download the `.deb` from the
+  [latest release](https://github.com/billsecond/patrone-notepad/releases/latest)
+  and open it; it needs `fonts-patroneos`, which that repository has.
+- **Windows:** below.
+
+Its history up to 0.3.2 is from PatroneOS's repository,
+[billsecond/patroneos](https://github.com/billsecond/patroneos), where it
+lived in `notepad/`; pull request numbers in those commits are that
+repository's.
 
 ```
 notepad [--new-window] [FILE...]
@@ -207,7 +225,7 @@ the 69 Rust crates compiled into it.
 
 - PatroneOS: the package's `copyright` file names every licence, and
   `third-party-licenses.txt.gz` beside it has each crate's own licence
-  and notices (`packaging/third-party-licenses.sh`). GTK and the rest
+  and notices (`tools/third-party-licenses.sh`). GTK and the rest
   are Ubuntu's packages, linked as shared libraries, each with its own
   copyright file; the fonts are `fonts-patroneos`'s.
 - Windows: the zip's `licenses` folder has Notepad's licence, the
@@ -224,8 +242,18 @@ cargo test
 ```
 
 It needs GTK 4.22 (`libgtk-4-dev`) and builds with Rust 1.93, Ubuntu
-26.04's. The package: `./packaging/build.sh patrone-notepad -d` on the dev
-VM (`packaging/README.md`).
+26.04's. The package: `tools/build-deb.sh` (add `-d` to skip the
+Build-Depends check, with Rust from rustup), into `out/`.
+
+## Releases
+
+A tag `vVERSION`, where VERSION is `debian/changelog`'s, makes a GitHub
+release (`.github/workflows/release.yml`): the `.deb`, built in a clean
+Ubuntu 26.04 container, the source tarball (`git archive` of the tag) and
+`SHA256SUMS`. PatroneOS builds its own package from that tarball: its
+repository ([billsecond/patroneos](https://github.com/billsecond/patroneos))
+pins the release in `packaging/patrone-notepad/release.txt`, and moving
+the pin on its `main` publishes it to Patrone's apt repository.
 
 ## Windows
 
