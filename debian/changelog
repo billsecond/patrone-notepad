@@ -1,3 +1,15 @@
+patrone-notepad (0.3.4) resolute; urgency=medium
+
+  * A Flatpak too, for any Linux (flatpak/org.patrone.Notepad.yml,
+    tools/build-flatpak.sh), with PatroneOS's fonts in it; each release
+    has the bundle, and Patrone's app index lists it.
+  * An AppStream listing (org.patrone.Notepad.metainfo.xml), for GNOME
+    Software and the app index.
+  * About and licences says where GTK's licences are on Ubuntu and in the
+    Flatpak, not only on PatroneOS.
+
+ -- William Daugherty <31995458+billsecond@users.noreply.github.com>  Tue, 24 Nov 2026 09:00:00 -0600
+
 patrone-notepad (0.3.3) resolute; urgency=medium
 
   * Built from its own repository, billsecond/patrone-notepad, where its

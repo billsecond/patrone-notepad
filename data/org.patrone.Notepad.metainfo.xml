@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Notepad's listing: GNOME Software (and Patrone Software) show it, and
+     Patrone's app index reads it from the Flatpak. -->
+<component type="desktop-application">
+  <id>org.patrone.Notepad</id>
+  <name>Notepad</name>
+  <summary>Write and edit plain text, in tabs</summary>
+  <developer id="com.patroneos">
+    <name>William Daugherty</name>
+  </developer>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <description>
+    <p>
+      Notepad edits plain text files, each in a tab across the top of the
+      window, with File, Edit and View menus, the way people who have used
+      Windows expect. Markdown is formatted as you write it.
+    </p>
+    <ul>
+      <li>Find and replace, go to line, word wrap and zoom</li>
+      <li>A font of your choice, PatroneOS Mono by default</li>
+      <li>Printing, and a light or dark look</li>
+      <li>A status bar with the line and column, characters, zoom, line endings and encoding</li>
+      <li>Open tabs and their unsaved changes are kept between sessions, which Settings turns off</li>
+    </ul>
+  </description>
+  <launchable type="desktop-id">org.patrone.Notepad.desktop</launchable>
+  <url type="homepage">https://github.com/billsecond/patrone-notepad</url>
+  <url type="bugtracker">https://github.com/billsecond/patrone-notepad/issues</url>
+  <url type="vcs-browser">https://github.com/billsecond/patrone-notepad</url>
+  <provides>
+    <binary>patrone-notepad</binary>
+    <binary>notepad</binary>
+  </provides>
+  <categories>
+    <category>Utility</category>
+    <category>TextEditor</category>
+  </categories>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="0.3.4" date="2026-11-24">
+      <description>
+        <p>Notepad as a Flatpak, for any Linux, with PatroneOS's fonts in it.</p>
+      </description>
+    </release>
+    <release version="0.3.3" date="2026-11-24">
+      <description>
+        <p>Built from its own repository.</p>
+      </description>
+    </release>
+  </releases>
+</component>
