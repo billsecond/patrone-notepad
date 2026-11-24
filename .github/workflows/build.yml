@@ -24,7 +24,8 @@ jobs:
       - name: Build dependencies
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          mk-build-deps -i -r -t 'apt-get install -y --no-install-recommends' debian/control
+          # In /tmp, so its own files stay out of the build
+          cd /tmp && mk-build-deps -i -r -t 'apt-get -y --no-install-recommends' "$GITHUB_WORKSPACE/debian/control"
       - name: Build
         run: tools/build-deb.sh
       - name: Install and remove it
