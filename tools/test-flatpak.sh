@@ -2,7 +2,8 @@
 # Runs the installed Flatpak in its sandbox (.github/workflows/flatpak.yml).
 set -euo pipefail
 id=org.patrone.Notepad
-dbus-run-session -- flatpak run "$id" --help
+# GTK needs a display even for --help: a virtual X server
+xvfb-run -a dbus-run-session -- flatpak run "$id" --help
 # PatroneOS's fonts are in it
 [[ $(flatpak run --command=fc-list "$id" | grep -c PatroneOS) -gt 0 ]]
 # Its licences, for About, and its listing
