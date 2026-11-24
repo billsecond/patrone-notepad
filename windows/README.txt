@@ -28,4 +28,4 @@ the fonts', and each GTK library's) and where the libraries' source is
 (SOURCES.txt) are in the licenses folder; Settings > About and licences
 shows them too.
 
-Source: https://github.com/billsecond/patroneos (notepad/)
+Source: https://github.com/billsecond/patrone-notepad
