@@ -1,0 +1,50 @@
+# Notepad's Flatpak. tools/build-flatpak.sh builds it: it puts the source
+# (with its crates vendored, so the build runs offline) in src/ beside a
+# copy of this file, and the fonts' address and checksum from
+# fonts-release.txt in place of @FONTS_URL@ and @FONTS_SHA256@.
+id: org.patrone.Notepad
+runtime: org.gnome.Platform
+runtime-version: '50'
+sdk: org.gnome.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.rust-stable
+command: patrone-notepad
+finish-args:
+  # A window, and nothing else: files come and go through the file chooser
+  # (the desktop's portal), and printing through the print portal
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --device=dri
+build-options:
+  append-path: /usr/lib/sdk/rust-stable/bin
+modules:
+  # PatroneOS's fonts, which Notepad's font menu starts with
+  - name: patroneos-fonts
+    buildsystem: simple
+    build-commands:
+      - find . -name 'PatroneOS*.ttf' -exec install -Dm644 -t /app/share/fonts/patroneos {} +
+      - find . \( -name OFL.txt -o -name FONTLOG.txt \) -exec install -Dm644 -t /app/share/fonts/patroneos {} +
+    sources:
+      - type: archive
+        url: '@FONTS_URL@'
+        sha256: '@FONTS_SHA256@'
+
+  - name: patrone-notepad
+    buildsystem: simple
+    build-options:
+      env:
+        CARGO_HOME: /run/build/patrone-notepad/cargo
+    build-commands:
+      - cargo build --release --frozen
+      - install -Dm755 target/release/patrone-notepad /app/bin/patrone-notepad
+      - ln -s patrone-notepad /app/bin/notepad
+      - install -Dm644 -t /app/share/applications data/org.patrone.Notepad.desktop
+      - install -Dm644 -t /app/share/icons/hicolor/scalable/apps data/org.patrone.Notepad.svg
+      - install -Dm644 -t /app/share/metainfo data/org.patrone.Notepad.metainfo.xml
+      # Its licence, and the crates', where About and licences reads them
+      - gzip -9n < third-party-licenses.txt > third-party-licenses.txt.gz
+      - install -Dm644 -t /app/share/doc/patrone-notepad LICENSE third-party-licenses.txt.gz
+    sources:
+      - type: dir
+        path: src

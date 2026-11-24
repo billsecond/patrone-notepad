@@ -15,6 +15,19 @@ installs on its own too, on Ubuntu 26.04 and systems built on it.
   Or download the `.deb` from the
   [latest release](https://github.com/billsecond/patrone-notepad/releases/latest)
   and open it; it needs `fonts-patroneos`, which that repository has.
+- **Any Linux, as a Flatpak**, with PatroneOS's fonts in it and kept up to
+  date: from Patrone's app index, which lists it (with Flathub, for the
+  GNOME runtime it runs on):
+
+  ```
+  flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+  flatpak remote-add --if-not-exists patrone-app-index https://billsecond.github.io/patrone-app-index/patrone-app-index.flatpakrepo
+  flatpak install patrone-app-index org.patrone.Notepad
+  ```
+
+  Or download the `.flatpak` from the latest release and
+  `flatpak install --user` it (no updates then). The Flatpak reaches files
+  through the file chooser, so it sees only what you open with it.
 - **Windows:** below.
 
 Its history up to 0.3.2 is from PatroneOS's repository,
@@ -245,12 +258,23 @@ It needs GTK 4.22 (`libgtk-4-dev`) and builds with Rust 1.93, Ubuntu
 26.04's. The package: `tools/build-deb.sh` (add `-d` to skip the
 Build-Depends check, with Rust from rustup), into `out/`.
 
+## Flatpak
+
+`tools/build-flatpak.sh` builds `flatpak/org.patrone.Notepad.yml` on the
+GNOME 50 runtime, with the crates vendored and PatroneOS's fonts
+(`fonts-release.txt`) in `/app/share/fonts`, into `out/`: the bundle
+(`patrone-notepad-VERSION-linux-x86_64.flatpak`) and a tarball of the
+same app's files (`...-linux-x86_64.tar.gz`). Patrone's app index
+([billsecond/patrone-app-index](https://github.com/billsecond/patrone-app-index))
+lists the bundle and has Flatpak download the tarball from the release.
+`.github/workflows/flatpak.yml` builds it, installs it and runs it.
+
 ## Releases
 
 A tag `vVERSION`, where VERSION is `debian/changelog`'s, makes a GitHub
 release (`.github/workflows/release.yml`): the `.deb`, built in a clean
-Ubuntu 26.04 container, the source tarball (`git archive` of the tag) and
-`SHA256SUMS`. PatroneOS builds its own package from that tarball: its
+Ubuntu 26.04 container, the source tarball (`git archive` of the tag), the
+Flatpak bundle and its tarball, and `SHA256SUMS`. PatroneOS builds its own package from that tarball: its
 repository ([billsecond/patroneos](https://github.com/billsecond/patroneos))
 pins the release in `packaging/patrone-notepad/release.txt`, and moving
 the pin on its `main` publishes it to Patrone's apt repository.

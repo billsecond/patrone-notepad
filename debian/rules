@@ -24,6 +24,8 @@ override_dh_auto_install:
 	    $(pkg)/usr/share/applications/org.patrone.Notepad.desktop
 	install -Dm644 data/org.patrone.Notepad.svg \
 	    $(pkg)/usr/share/icons/hicolor/scalable/apps/org.patrone.Notepad.svg
+	install -Dm644 data/org.patrone.Notepad.metainfo.xml \
+	    $(pkg)/usr/share/metainfo/org.patrone.Notepad.metainfo.xml
 
 override_dh_auto_clean:
 	rm -rf target debian/cargo-home

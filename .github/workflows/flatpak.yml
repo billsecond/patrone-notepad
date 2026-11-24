@@ -1,0 +1,36 @@
+# Builds the Flatpak (tools/build-flatpak.sh), installs it, and runs it in
+# its sandbox. release.yml calls this for a tag, and keeps what it built.
+name: Flatpak
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_call:
+
+jobs:
+  flatpak:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends flatpak flatpak-builder dbus-x11
+      - name: Build
+        run: tools/build-flatpak.sh
+      - name: Install and run it
+        run: |
+          flatpak install --user -y --noninteractive out/*-linux-x86_64.flatpak
+          id=$(sed -n 's/^id: //p' flatpak/*.yml)
+          flatpak info --user "$id"
+          dbus-run-session -- flatpak run "$id" --help
+          # PatroneOS's fonts are in it
+          flatpak run --command=fc-list "$id" | grep -c 'PatroneOS' | grep -qv '^0$'
+          flatpak run --command=ls "$id" /app/share/doc/patrone-notepad /app/share/metainfo
+      - uses: actions/upload-artifact@v4
+        with:
+          name: flatpak
+          path: |
+            out/*-linux-x86_64.flatpak
+            out/*-linux-x86_64.tar.gz

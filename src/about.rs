@@ -37,8 +37,8 @@ fn app_folder() -> Option<PathBuf> {
 }
 
 /// The Rust crates' licence texts: the package's
-/// `/usr/share/doc/patrone-notepad/third-party-licenses.txt.gz`, or the
-/// Windows build's `licenses/rust-crates.txt`.
+/// `/usr/share/doc/patrone-notepad/third-party-licenses.txt.gz` (the
+/// Flatpak's, under `/app`), or the Windows build's `licenses/rust-crates.txt`.
 fn crate_licences() -> Option<String> {
     let folder = app_folder()?;
     let plain = folder.join("licenses").join("rust-crates.txt");
@@ -70,8 +70,15 @@ fn where_the_rest_are() -> String {
              DLLs. Their licences, the fonts' licence (OFL.txt), and where each library's \
              source is (SOURCES.txt) are in {folder}."
         )
+    } else if std::path::Path::new("/.flatpak-info").exists() {
+        "GTK and the libraries it uses come from the GNOME runtime this Flatpak runs on \
+         (org.gnome.Platform, from Flathub), linked as shared libraries; \
+         flatpak info --show-runtime org.patrone.Notepad names it, and its licences are in \
+         it. PatroneOS's fonts come with this app, and their licence is \
+         /app/share/fonts/patroneos/OFL.txt."
+            .into()
     } else {
-        "GTK and the libraries it uses come from PatroneOS's own packages, linked as shared \
+        "GTK and the libraries it uses come from the system's packages, linked as shared \
          libraries; each package's licence is in /usr/share/doc/PACKAGE/copyright, and its \
          source in the archive (apt-get source PACKAGE). The fonts' licence is \
          /usr/share/doc/fonts-patroneos/OFL.txt."

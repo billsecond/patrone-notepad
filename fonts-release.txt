@@ -1,6 +1,6 @@
 # A copy of PatroneOS's fonts/release.txt (billsecond/patroneos): the
-# release of billsecond/patroneos-fonts the Windows build bundles. Keep it
-# the same as PatroneOS's, which fonts-patroneos installs.
+# release of billsecond/patroneos-fonts that the Windows build and the
+# Flatpak bundle. Keep it the same as PatroneOS's, which fonts-patroneos installs.
 # The fonts fonts-patroneos installs: a release of PatroneOS's fonts,
 # https://github.com/billsecond/patroneos-fonts, pinned by its checksum.
 # packaging/build.sh fetches it and checks it before the package is built,
