@@ -7,7 +7,7 @@
 #                                                 which Patrone's app index
 #                                                 has Flatpak download
 #
-# Needs flatpak, flatpak-builder and cargo. The GNOME runtime, its SDK and
+# Needs flatpak, flatpak-builder, bsdunzip (libarchive-tools) and cargo. The GNOME runtime, its SDK and
 # the Rust extension come from Flathub, for this account.
 set -euo pipefail
 
